@@ -1,0 +1,32 @@
+ # List of Bible books (partial example)
+bible_books = [
+  "Genesis", "Exodus", "Leviticus", "Numbers", Deuteronomy", "Joshua", "Judges", "Ruth", "1 Samuel", "2 Samual", "1 Kings", "2 Kings", "1 Chronicles", "2 Chronicles", "Ezra", "Nehemiah", "Esther", "Job", "Psalms", "Proverbs", "Ecclesiastes", "Song of Solomon", "Isaiah", "Jeremiah", "Lamentations", "Ezekiel", "Daniel", "Hosea", "Joel", "amos", "Obadiah", "Jonah", "Micah", "Nahum", "Habakkuk", "Zephaniah", "Haggai", "Zechariah", "Malachi", "Matthew", "Mark", "Luke", "John", "Acts", "Romans", "1 Corinthians", "2 Corinthians", "Galatians", "Ephesians", "Phillippians", "Colossians", "1 Thessalonians", "2 Thessalonians", "1 Timothy", "2 Timothy", "Titus", "Philemon", "hebrews", "James", "1 Peter", "2 Peter", "1 John", "2 John", "3 John", "Jude", "Revelations"
+]
+def recognize_book_from_audio():
+    recognizer = sr.Recognizer()
+    mic = sr.Microphone()
+
+    print("Listening...")
+    with mic as source:
+        recognizer.adjust_for_ambient_noise(source)
+        audio = recognizer.listen(source)
+
+    try:
+        text = recognizer.recognize_google(audio)
+        print(f"recognized: {text}")
+        # Find any mentioned book
+        for book in bible_books:
+            if book.lower() in text.lower():
+                print(f"Suggested Book: {book}")
+                return book
+
+        print ("No Bible book identified.")
+        return None
+
+    except sr.UnknownValueError:
+        print ("could not understand audio.")
+    except sr. RequestError as e:
+        print(f"Error with speech recognition services: {e}")
+
+if __name__ == "__main__":
+    recognize_book_from_audio()
